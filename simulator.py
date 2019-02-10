@@ -10,7 +10,7 @@ def randomLoss(notLoss):
         return False
 
 def writeZero(writeFile,numFrames):
-    writeFile.writeframes(""*numFrames)
+    writeFile.writeframes(bytes("00"*numFrames,'utf-8'))
 
 def writeLastPacket(writeFile,packet):
     writeFile.writeframes(packet)
@@ -27,7 +27,7 @@ def simulatorZero(numFrames,filename,notLoss):
     while i<frames:
         i+=1
         frame=rFile.readframes(numFrames)
-        if(randomLoss(notLoss)&i!=0):
+        if(randomLoss(notLoss)):
             writeZero(wFile,numFrames)
         else:
             wFile.writeframes(frame)
@@ -44,7 +44,7 @@ def simulatorPacket(numFrames,filename,notLoss):
         i+=1
         prevframe=frame
         frame=rFile.readframes(numFrames)
-        if(randomLoss(notLoss)&i!=0):
+        if(randomLoss(notLoss)):
             writeLastPacket(wFile,prevframe)
         else:
             wFile.writeframes(frame)
@@ -61,7 +61,7 @@ def simulatorSample(numFrames,filename,notLoss):
         frame=rFile.readframes(numFrames-2)
         prevsample=sample
         sample=rFile.readframes(2)
-        if(randomLoss(notLoss)&i!=0):
+        if(randomLoss(notLoss)):
             writeLastSample(wFile,numFrames,prevsample)
 
         else:
@@ -69,8 +69,8 @@ def simulatorSample(numFrames,filename,notLoss):
             wFile.writeframes(sample)
                 
 
-simulatorZero(10,"doors.au",50)
-simulatorZero(10,"poe.au",50)
+simulatorZero(2000,"doors.au",70)
+simulatorZero(2000,"poe.au",70)
 #simulatorPacket(2000,"pink_panther.au",100)
 #simulatorSample(2000,"simple.au",100)
 
